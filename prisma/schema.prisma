@@ -13,11 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
+
+model Message {
+  id        Int      @default(autoincrement()) @id
+  content   String
+
+  @@map("message")
 }
 
-model Post {
+model TestTable {
   id        Int      @default(autoincrement()) @id
-  content   String?
+  notfound   String
+
+  @@map("test_table")
 }
