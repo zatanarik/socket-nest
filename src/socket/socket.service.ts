@@ -1,8 +1,4 @@
-/*
-https://docs.nestjs.com/providers#services
-*/
-
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -12,11 +8,15 @@ export class SocketService {
       ) {}
 
     async saveMessage(content: string, userId: number): Promise<void> {
-        await this.prismaService.message.create({
-            data: {
-                content: content,
-                userId: userId
-            }
-        });
+        try {
+            await this.prismaService.message.create({
+                data: {
+                    content: content,
+                    userId: userId
+                }
+            });
+        } catch (err){
+            console.error(err, new Date());
+        }
     }
  }
