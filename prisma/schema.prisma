@@ -13,17 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Message {
-  id        Int      @default(autoincrement()) @id
-  content   String
+  id      Int    @id @default(autoincrement())
+  content String
+  userId  Int?   @map("user_id")
+  user    User?  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("message")
 }
 
-model TestTable {
-  id        Int      @default(autoincrement()) @id
-  notfound   String
+model User {
+  id        Int       @id @default(autoincrement())
+  notfound  String
+  createdAt DateTime  @map("created_at")
+  updatedAt DateTime  @map("updated_at")
+  Message   Message[]
 
-  @@map("test_table")
+  @@map("user")
 }

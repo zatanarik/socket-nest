@@ -11,10 +11,11 @@ export class SocketService {
         private readonly prismaService: PrismaService,
       ) {}
 
-    async saveMessage(content: string): Promise<void> {
+    async saveMessage(content: string, userId: number): Promise<void> {
         await this.prismaService.message.create({
             data: {
                 content: content,
+                userId: userId
             }
         });
     }
