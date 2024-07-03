@@ -5,7 +5,7 @@ https://docs.nestjs.com/websockets/gateways#gateways
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { SocketService } from './socket.service';
-import { InternalServerErrorException, Param } from '@nestjs/common';
+import { SendMessageDto } from './dto/send-message.dto';
 
 @WebSocketGateway()
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
@@ -15,9 +15,13 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
     server: Socket;
 
     @SubscribeMessage('events')
-    async handleEvent(@MessageBody() data: any) {
-        const userId = await this.socketService.saveMessage(data.content, +data.userId);
-        this.server.emit("events", `created message with id = ${userId}`);
+    async handleEvent(@MessageBody() sendMessageDto: SendMessageDto) {
+        try {
+            const userId = await this.socketService.saveMessage(sendMessageDto.content, sendMessageDto.userId);
+            this.server.emit("events",JSON.stringify({success:true, data:userId}) );
+        } catch (err) {
+            this.server.emit("events",JSON.stringify({success:false, error:err}));
+        }
     }
 
     handleConnection(client: any, ...args: any[]) {

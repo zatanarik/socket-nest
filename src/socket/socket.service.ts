@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -18,6 +18,7 @@ export class SocketService {
             return message.id
         } catch (err) {
             console.log(err);
+            throw new InternalServerErrorException('неверные данные');     
         }
     }
  }
