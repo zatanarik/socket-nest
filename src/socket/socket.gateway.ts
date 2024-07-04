@@ -21,7 +21,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
         try {
             const rooms = await this.socketService.findRoomsByUserId(sendMessageDto.userId);
             const roomsNames = rooms.map(room => {
-                return room.room.name
+                return String(room.room.id)
             })
             if(!roomsNames.includes(String(sendMessageDto.roomId))) {
                 throw new BadRequestException('Пользователя нет в данной комнате');
@@ -52,7 +52,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect, 
             console.log(`User connected with id = ${userId}`);
             const rooms = await this.socketService.findRoomsByUserId(userId);
             const roomsNames = rooms.map(room => {
-                return room.room.name
+                return String(room.room.id)
             })
             console.log(`юзер в комнатах `, roomsNames);
             await client.join(roomsNames);

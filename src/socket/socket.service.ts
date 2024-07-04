@@ -35,13 +35,13 @@ export class SocketService {
     }
   }
 
-  async findRoomsByUserId(userId: number): Promise<{room: {name: string}}[]> {
+  async findRoomsByUserId(userId: number): Promise<{room: {id: number}}[]> {
     try {
       const rooms = await this.prismaService.userRoom.findMany({
         select:{
           room:{
             select:{
-              name:true,
+              id:true,
             }
           }
 
