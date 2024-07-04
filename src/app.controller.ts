@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('room')
+  async createRoomAndJoinUser(@Body() data) {
+      await this.appService.createRoomAndJoinUser(+data.userId, data.roomName);
+      return {success:true, data:{message:'room created'}}
   }
 }
