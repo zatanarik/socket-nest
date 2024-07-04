@@ -8,4 +8,6 @@ export class SendMessageDto {
     @IsString()
     @IsNotEmpty()
     content: string
+    
+    roomId: number
 }
